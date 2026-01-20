@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Swara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        /* --- THE PERFECT BEIGE PALETTE --- */
+        :root {
+            --bg-cream: #FDFBF7;
+            --bg-latte: #F3E9DC;
+            --text-mocha: #5D4037;
+            --accent-gold: #C5A059;
+            --white: #FFFFFF;
+            --shadow: 0 20px 60px rgba(93, 64, 55, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-mocha);
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        /* --- NAVIGATION (BOTTOM DOCK) --- */
+        .nav-dock {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px; border-radius: 50px;
+            box-shadow: var(--shadow);
+            display: flex; gap: 30px; z-index: 1000;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .nav-item {
+            font-family: 'Cinzel', serif; font-size: 1.1rem; cursor: pointer;
+            opacity: 0.4; transition: 0.4s ease;
+        }
+        .nav-item.active { opacity: 1; color: var(--accent-gold); font-weight: bold; transform: scale(1.1); }
+        .nav-item:hover { opacity: 1; }
+
+        /* --- PAGE TRANSITIONS --- */
+        .page {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            padding: 40px; /* Padding for desktop */
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; transform: translateY(20px) scale(0.98);
+            pointer-events: none; transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .page.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+
+        /* --- TYPOGRAPHY --- */
+        h1 { font-family: 'Cinzel', serif; font-size: 4rem; line-height: 1; color: var(--text-mocha); text-align: center; }
+        .cursive { font-family: 'Great Vibes', cursive; font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 15px; }
+        h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 25px; text-align: center; color: var(--text-mocha); }
+        p { font-size: 1rem; line-height: 1.8; text-align: center; max-width: 500px; opacity: 0.8; }
+
+        /* --- PAGE 1: HERO IMAGE --- */
+        .photo-frame {
+            width: 260px; height: 360px;
+            background: var(--white);
+            padding: 15px 15px 60px 15px;
+            box-shadow: var(--shadow);
+            transform: rotate(-3deg); margin: 30px 0;
+            transition: 0.5s;
+        }
+        .photo-frame:hover { transform: rotate(0) scale(1.02); }
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; filter: sepia(10%); }
+
+        /* --- PAGE 2: TIMELINE --- */
+        .story-box { border-left: 2px solid var(--accent-gold); padding-left: 25px; max-width: 500px; text-align: left; }
+        .story-item { margin-bottom: 30px; }
+        .story-title { font-family: 'Cinzel'; font-weight: bold; color: var(--accent-gold); font-size: 1.2rem; }
+
+        /* --- PAGE 3: GALLERY (UPDATED - SIDE BY SIDE) --- */
+        .gallery-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+            max-width: 900px;
+            margin-top: 20px;
+        }
+        .polaroid-card {
+            background: var(--white);
+            padding: 10px 10px 40px 10px;
+            box-shadow: var(--shadow);
+            width: 200px;
+            transition: all 0.4s ease;
+        }
+        .polaroid-card img { width: 100%; height: 200px; object-fit: cover; filter: sepia(10%); }
+
+        /* Subtle rotations for aesthetic layout */
+        .polaroid-card:nth-child(1) { transform: rotate(-3deg); }
+        .polaroid-card:nth-child(2) { transform: rotate(2deg) translateY(-20px); /* Slight lift */ }
+        .polaroid-card:nth-child(3) { transform: rotate(-1deg); }
+
+        .polaroid-card:hover { transform: scale(1.1) rotate(0deg) translateY(0); z-index: 10; box-shadow: 0 30px 70px rgba(93, 64, 55, 0.2); }
+
+        /* --- PAGE 4: LETTER --- */
+        .letter-card {
+            background: var(--white); padding: 40px; width: 90%; max-width: 550px;
+            border-top: 5px solid var(--accent-gold);
+            box-shadow: var(--shadow);
+        }
+        .surprise-btn {
+            margin-top: 30px; padding: 15px 40px;
+            background: var(--text-mocha); color: var(--white);
+            border: none; font-family: 'Cinzel'; letter-spacing: 2px;
+            cursor: pointer; border-radius: 30px; transition: 0.3s;
+        }
+        .surprise-btn:hover { background: var(--accent-gold); }
+        
+        #final-gift {
+            opacity: 0; margin-top: 25px; transition: 1s; 
+            font-family: 'Cinzel'; font-weight: bold; 
+            color: var(--accent-gold); font-size: 1.1rem;
+            text-align: center;
+        }
+
+        /* WELCOME */
+        #welcome { position: fixed; inset: 0; background: var(--bg-cream); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s; }
+        
+        /* Mobile */
+        @media (max-width: 768px) { 
+            h1 { font-size: 3rem; } 
+            .nav-dock { padding: 12px 25px; gap: 20px; } 
+            .nav-item { font-size: 0.9rem; }
+            .page { padding: 80px 20px 100px 20px; /* More padding on mobile so nav doesn't cover content */ }
+            /* On mobile, stack the gallery photos vertically */
+            .gallery-container { flex-direction: column; gap: 40px; }
+            .polaroid-card:nth-child(2) { transform: rotate(2deg) translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="welcome">
+        <div class="cursive" style="font-size: 3rem;">Swara</div>
+        <p style="letter-spacing: 3px; text-transform: uppercase; margin-top: 10px;">The 19th Chapter</p>
+        <button onclick="enter()" style="margin-top: 40px; padding: 15px 50px; background: transparent; border: 1px solid var(--text-mocha); color: var(--text-mocha); font-family: 'Cinzel'; cursor: pointer; transition: 0.3s;">OPEN</button>
+    </div>
+
+    <div id="p1" class="page active">
+        <div class="cursive">Happy Birthday</div>
+        <h1>Nineteen</h1>
+        
+        <div class="photo-frame">
+            <img src="photo1.jpg" onerror="this.src='https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&q=60'">
+            <div style="text-align: center; margin-top: 15px; font-family: 'Great Vibes'; font-size: 1.5rem; color: #888;">Bestie</div>
+        </div>
+        
+        <p>To the girl who changed my world without ever stepping into it.</p>
+    </div>
+
+    <div id="p2" class="page">
+        <h2>Our Connection</h2>
+        <div class="story-box">
+            <div class="story-item">
+                <div class="story-title">How it Started</div>
+                <p style="text-align: left;">Just two strangers online. Now I can't imagine a day without your notifications.</p>
+            </div>
+            <div class="story-item">
+                <div class="story-title">How it's Going</div>
+                <p style="text-align: left;">Sharing random videos, venting about life, and being there for each other through everything.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="p3" class="page">
+        <h2>Happy Birthday</h2>
+        <p style="margin-bottom: 40px; font-size: 0.9rem;">Loads Of Love Mwah!</p>
+        
+        <div class="gallery-container">
+            <div class="polaroid-card">
+                <img src="photo2.jpg" onerror="this.src='https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&q=60'">
+            </div>
+            <div class="polaroid-card">
+                <img src="photo3.jpg" onerror="this.src='https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&q=60'">
+            </div>
+            <div class="polaroid-card">
+                <img src="photo4.jpg" onerror="this.src='https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&q=60'">
+            </div>
+        </div>
+    </div>
+
+    <div id="p4" class="page">
+        
+        <div class="letter-card">
+            <p><strong>Dearest Swara,</strong></p>
+            <br>
+            <p>
+                Happy 19th! heheheh love youuu smsms mwahh I know you're not feeling well right now, but I hope this brings a small smile to your face.
+                It's crazy that we haven't met, but the bond we share through our texts and shared videos is realer than most things in life.
+                like internet lit said "here, meet your solmate"            
+            </p>
+            <br>
+            <p>
+                Get well soon, because we have a promise to keep.
+            </p>
+        </div>
+        
+        <button class="surprise-btn" onclick="revealGift(this)">TAP TO REVEAL</button>
+        <div id="final-gift">
+            ONE DAY: REAL HUGS & NO SCREENS.
+        </div>
+    </div>
+
+    <div class="nav-dock">
+        <div class="nav-item active" onclick="nav(1)">I</div>
+        <div class="nav-item" onclick="nav(2)">II</div>
+        <div class="nav-item" onclick="nav(3)">III</div>
+        <div class="nav-item" onclick="nav(4)">IV</div>
+    </div>
+
+    <script>
+        function enter() {
+            document.getElementById('welcome').style.opacity = 0;
+            setTimeout(()=> document.getElementById('welcome').style.display='none', 800);
+        }
+
+        function nav(n) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.getElementById('p'+n).classList.add('active');
+            document.querySelectorAll('.nav-item')[n-1].classList.add('active');
+        }
+
+        function revealGift(btn) {
+            btn.style.display = 'none';
+            document.getElementById('final-gift').style.opacity = 1;
+            confetti();
+        }
+
+        function confetti() {
+            const colors = ['#C5A059', '#F3E9DC', '#5D4037'];
+            for(let i=0; i<50; i++) {
+                let d = document.createElement('div');
+                d.style.cssText = `position:fixed; top:0; left:${Math.random()*100}vw; width:8px; height:8px; background:${colors[Math.floor(Math.random()*3)]}; z-index:9999;`;
+                document.body.appendChild(d);
+                d.animate([{transform:'translateY(0) rotate(0)'},{transform:`translateY(100vh) rotate(${Math.random()*360}deg)`}], {duration:Math.random()*2000+1500}).onfinish=()=>d.remove();
+            }
+        }
+    </script>
+</body>
+</html>
